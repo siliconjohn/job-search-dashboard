@@ -1,5 +1,5 @@
 import { Table } from 'antd'; 
-import type { ActivityListType, ActivityListTableType } from '../../types';
+import type { EntrieType, ActivityListType, ActivityListTableType } from '../../types';
 import type { TableProps } from 'antd';
 
 const ActivityList: React.FC<ActivityListType> = ({ entries }) => {
@@ -13,7 +13,14 @@ const ActivityList: React.FC<ActivityListType> = ({ entries }) => {
                 new Intl.DateTimeFormat('en-US', {
                     month: 'short',
                     day: 'numeric'
-                }).format(date) 
+                }).format(date),
+            sorter: (a, b) => { 
+                const timeA = new Date(a.createdAt).getTime();
+                const timeB = new Date(b.createdAt).getTime();
+                return (isNaN(timeA) ? 0 : timeA) - (isNaN(timeB) ? 0 : timeB);
+            },
+            defaultSortOrder: 'descend',    
+            sortDirections: ['ascend', 'descend'],
         },
         {
             title: 'Name',
