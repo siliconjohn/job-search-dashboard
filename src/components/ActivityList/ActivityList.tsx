@@ -1,31 +1,36 @@
-import { List  } from 'antd'; 
-import type { ActivityListType } from '../../types';
+import { Table } from 'antd'; 
+import type { ActivityListType, ActivityListTableType } from '../../types';
+import type { TableProps } from 'antd';
 
 const ActivityList: React.FC<ActivityListType> = ({ entries }) => {
 
-  return (
-    <>
-        {entries.length > 0 && (
-            <List
-                dataSource={entries}
-                itemLayout="horizontal"
-                renderItem={(item) => (
-                    <List.Item>
-                        <List.Item.Meta
-                            title={item.name}
-                            description={
-                                <>
-                                    <a href={item.url}>{item.url}</a>
-                                    <p>{item.createdAt.toLocaleString()}</p>
-                                </>
-                            }
-                        />
-                    </List.Item>
-                )}
-            />
-        )}
-    </>
-  )
+    const columns: TableProps<ActivityListTableType>['columns'] = [
+        {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'at',
+            render: (date) => 
+                new Intl.DateTimeFormat('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                }).format(date) 
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',  
+        },
+        {
+            title: 'URL',
+            dataIndex: 'url',
+            key: 'url',
+            render: (text) => <a href={text}>{text}</a> 
+        }
+    ];
+
+    return (
+        <Table<ActivityListTableType> columns={columns} dataSource={entries} /> 
+    )
 }  
 
 export default ActivityList;

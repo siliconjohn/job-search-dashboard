@@ -6,9 +6,17 @@ export type LogType = {
 export type EntrieType = {
     name: string,
     url: string,
-    createdAt: Date 
+    createdAt: Date,
+    key: string
 }
 
 export type ActivityListType = {
     entries: EntrieType[];
+}
+
+export interface ActivityListTableType {
+    key: string,
+    name: string,
+    url: string,
+    createdAt: Date 
 }

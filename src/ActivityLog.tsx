@@ -20,7 +20,14 @@ const ActivityLog: React.FC<LogType> = ( { name } ) => {
     } );  
  
     const onFinish = ( values: EntrieType ) => {
-        setEntries( [ ...entries, { ...values, createdAt: new Date() } ] ); 
+        setEntries( [ ...entries, 
+            { 
+                ...values, 
+                createdAt: new Date(), 
+                key: Math.random().toString().slice(2, 12)
+            } 
+        ] );
+
         formController.resetFields();
     };
     
