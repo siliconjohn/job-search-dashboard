@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22          # or 18, 22 — match what you use locally
+
+      # ────────────────────────────────────────────────
+      # Frontend (React)
+      # ────────────────────────────────────────────────
+      - name: Install frontend dependencies
+        working-directory: ./          # ← change if your folder is called frontend, app, etc.
+        run: npm ci                          # faster & more reliable than npm install
+
+      # - name: Lint frontend
+      #   working-directory: ./client
+      #   run: npm run lint                    # only if you have a lint script
+
+      - name: Build frontend
+        working-directory: ./client
+        run: npm run build
+
+      # - name: Test frontend (optional)
+      #   working-directory: ./client
+      #   run: npm test -- --watchAll=false    # or CI=true npm test
+ 
