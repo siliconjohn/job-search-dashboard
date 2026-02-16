@@ -1,6 +1,7 @@
-import { Input, Button, Form } from 'antd'; 
+import { Button, Form } from 'antd'; 
 import type { EntrieType } from '../../types'; 
 import { useEntriesStore } from '../../stores/entriesStore';
+import InputCopyPaste from '../InputCopyPaste/InputCopyPaste';
 
 const AddEntry: React.FC = () => {
     const [ form ] = Form.useForm();
@@ -16,7 +17,7 @@ const AddEntry: React.FC = () => {
         
         form.resetFields();
     };
-    
+ 
     return (
         <>
             <Form
@@ -24,30 +25,26 @@ const AddEntry: React.FC = () => {
                 onFinish={ onFinish }
                 labelCol={{ span: 2 }}
                 wrapperCol={{ span: 12 }}
-                initialValues={{ remember: true }}
-            >
-                <Form.Item
+                initialValues={{ name: '', url: '' }}
+            >   
+                <InputCopyPaste 
+                    form={ form }
                     label="Name"
-                     name="name"
-                >
-                    <Input></Input>
-                </Form.Item>
+                    valueName={ "name" }
+                />
 
-                <Form.Item 
-                    label="Url"
-                     name="url"
+                <InputCopyPaste 
+                    form={ form }
+                    label="URL"
+                    valueName={ "url" }
+                />
+                
+                <Button 
+                    type="primary" 
+                    htmlType="submit"
                 >
-                    <Input></Input>
-                </Form.Item>
-            
-                <Form.Item  >
-                    <Button 
-                        type="primary" 
-                        htmlType="submit"
-                    >
-                        Submit
-                    </Button>
-                </Form.Item>
+                    Submit
+                </Button>
             </Form> 
         </>
     )
