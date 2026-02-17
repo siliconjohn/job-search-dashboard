@@ -8,7 +8,7 @@ const options = kindOptions.map(kind => ({
     value: kind,
 }));
 
-interface EntryKindExampleProps { 
+interface EntryKindExampleProps {  
     valueName: keyof EntrieType;
 }
 
@@ -19,8 +19,7 @@ const EntryKindExample = ( { valueName }: EntryKindExampleProps ) => (
     >    
         <Radio.Group
             block
-            options={options}
-            defaultValue="App"
+            options={options} 
             optionType="button"
         /> 
     </Form.Item> 
