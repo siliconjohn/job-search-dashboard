@@ -32,7 +32,7 @@ const columns: TableProps<EntryListTableType>['columns'] = [
         title: 'Kind',
         dataIndex: 'kind',
         key: 'kind',
-        width: 100,
+        width: 50,
         render: (kind: EntryKind['kind']) => (  
             <Tag color={ getTagColor(kind) } variant="solid">{kind}</Tag>
         ),
@@ -65,6 +65,7 @@ const columns: TableProps<EntryListTableType>['columns'] = [
         title: 'Created',
         dataIndex: 'createdAt',
         key: 'createdAt',
+        width: 70,
         render: (createdAt) => 
             dateFormatter.format( new Date( createdAt )),
         sorter: (a, b) => { 
