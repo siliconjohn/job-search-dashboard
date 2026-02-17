@@ -9,7 +9,7 @@ export type EntrieType = {
     company: string,
     note: string,
     position: string,
-    createdAt: Date,
+    createdAt: string,
     kind: EntryKind
     key: string
 }
@@ -22,5 +22,5 @@ export interface EntryListTableType {
     key: string,
     name: string,
     url: string,
-    createdAt: Date 
+    createdAt: string 
 }
