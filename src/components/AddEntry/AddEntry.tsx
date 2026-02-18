@@ -20,7 +20,7 @@ const AddEntry: React.FC = () => {
     };
  
     return (
-        <Card title="Add Entry">
+        <Card title="Add Entry"  style={{ marginBottom: 24 }}>
             <Form
                 form={ form }
                 onFinish={ onFinish }

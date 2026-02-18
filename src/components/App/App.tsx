@@ -19,7 +19,7 @@ const headerStyle: React.CSSProperties = {
 }
 
 const contentStyle: React.CSSProperties = {
-    padding: '50px',
+    padding: '24px',
     overflow: 'scroll',
 };
 

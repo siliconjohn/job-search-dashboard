@@ -1,4 +1,5 @@
-import { Table, Tag } from 'antd'; 
+import { Table, Input, Tag, Card } from 'antd'; 
+import { useState } from 'react';
 import type { EntryListTableType, EntryKind } from '../../types';
 import type { TableProps } from 'antd';
 import { useEntriesStore } from '../../stores/entriesStore';
@@ -15,10 +16,6 @@ const hrefStyle: React.CSSProperties = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap' 
 }
-
-const tableStyle: React.CSSProperties = { 
-    marginTop: '24px'
-}
  
 const kindToColor: Record<EntryKind['kind'], string> = {
     App: 'green',
@@ -32,6 +29,21 @@ const getTagColor = (kind: EntryKind['kind']): string => {
 };
 
 const columns: TableProps<EntryListTableType>['columns'] = [
+    {
+        title: 'Created',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        width: 70,
+        render: (createdAt) => 
+            dateFormatter.format( new Date( createdAt )),
+        sorter: (a, b) => { 
+            const timeA = new Date(a.createdAt).getTime();
+            const timeB = new Date(b.createdAt).getTime();
+            return (isNaN(timeA) ? 0 : timeA) - (isNaN(timeB) ? 0 : timeB);
+        },
+        defaultSortOrder: 'descend',    
+        sortDirections: ['ascend', 'descend'],
+    },
     {
         title: 'Kind',
         dataIndex: 'kind',
@@ -64,33 +76,41 @@ const columns: TableProps<EntryListTableType>['columns'] = [
             >
                 {url}
             </a> 
-    },
-    {
-        title: 'Created',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        width: 70,
-        render: (createdAt) => 
-            dateFormatter.format( new Date( createdAt )),
-        sorter: (a, b) => { 
-            const timeA = new Date(a.createdAt).getTime();
-            const timeB = new Date(b.createdAt).getTime();
-            return (isNaN(timeA) ? 0 : timeA) - (isNaN(timeB) ? 0 : timeB);
-        },
-        defaultSortOrder: 'descend',    
-        sortDirections: ['ascend', 'descend'],
     }
 ];
 
 const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
+    const [searchText, setSearchText] = useState('');
 
+    // Filter entries based on search input
+    const filteredEntries = entries.filter((entry) => {
+        if (!searchText) return true;
+        const lowerSearch = searchText.toLowerCase();
+
+        return (
+        (entry.company?.toLowerCase().includes(lowerSearch) ?? false) ||
+        (entry.position?.toLowerCase().includes(lowerSearch) ?? false) ||
+        (entry.url?.toLowerCase().includes(lowerSearch) ?? false)
+        );
+    });
+    
     return (
-        <Table<EntryListTableType> style={tableStyle} 
-            columns={columns} 
-            dataSource={entries} 
-            rowKey="key" 
-        /> 
+        <Card title="Entryies">
+            <Input
+                placeholder="Search by company, position or URL..."
+                allowClear
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                style={{ marginBottom: 16 }}
+            />
+    
+            <Table<EntryListTableType> 
+                columns={columns} 
+                dataSource={filteredEntries} 
+                rowKey="key" 
+            /> 
+        </Card>
     )
 }  
 
