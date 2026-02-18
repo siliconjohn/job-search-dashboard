@@ -15,6 +15,10 @@ const hrefStyle: React.CSSProperties = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap' 
 }
+
+const tableStyle: React.CSSProperties = { 
+    marginTop: '24px'
+}
  
 const kindToColor: Record<EntryKind['kind'], string> = {
     App: 'green',
@@ -82,7 +86,7 @@ const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
 
     return (
-        <Table<EntryListTableType> 
+        <Table<EntryListTableType> style={tableStyle} 
             columns={columns} 
             dataSource={entries} 
             rowKey="key" 
