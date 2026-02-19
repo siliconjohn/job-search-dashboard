@@ -62,8 +62,7 @@ const columns: TableProps<EntryListTableType>['columns'] = [
         title: 'Position',
         dataIndex: 'position',
         key: 'position',  
-    },
-     
+    }, 
     {
         title: 'URL',
         dataIndex: 'url',
@@ -82,16 +81,15 @@ const columns: TableProps<EntryListTableType>['columns'] = [
 const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
     const [searchText, setSearchText] = useState('');
-
-    // Filter entries based on search input
+ 
     const filteredEntries = entries.filter((entry) => {
         if (!searchText) return true;
         const lowerSearch = searchText.toLowerCase();
 
         return (
-        (entry.company?.toLowerCase().includes(lowerSearch) ?? false) ||
-        (entry.position?.toLowerCase().includes(lowerSearch) ?? false) ||
-        (entry.url?.toLowerCase().includes(lowerSearch) ?? false)
+            (entry.company?.toLowerCase().includes(lowerSearch) ?? false) ||
+            (entry.position?.toLowerCase().includes(lowerSearch) ?? false) ||
+            (entry.url?.toLowerCase().includes(lowerSearch) ?? false)
         );
     });
     
