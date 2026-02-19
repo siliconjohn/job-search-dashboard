@@ -1,6 +1,6 @@
 
 export type EntryKind = {
-    kind: 'App' | 'Note' | 'Contact' | 'Other'
+    kind: 'Application' | 'Note' | 'Contact' | 'Other'
 }
 
 export type EntrieType = { 

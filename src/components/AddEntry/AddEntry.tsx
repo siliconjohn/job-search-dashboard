@@ -20,13 +20,13 @@ const AddEntry: React.FC = () => {
     };
  
     return (
-        <Card title="Add Entry"  style={{ marginBottom: 24 }}>
+        <Card title="Add To Log"  style={{ marginBottom: 24 }}>
             <Form
                 form={ form }
                 onFinish={ onFinish }
                 labelCol={{ span: 2 }}
                 wrapperCol={{ span: 12 }}
-                initialValues={{ name: '', url: '', kind: 'App' }}
+                initialValues={{ name: '', url: '', kind: 'Application' }}
                 >   
                 <InputCopyPaste 
                     form={ form }

@@ -1,7 +1,7 @@
 import { Radio, Form } from 'antd'; 
 import type { EntryKind, EntrieType } from '../../types';
 
-const kindOptions: EntryKind['kind'][] = ['App', 'Note', 'Contact', 'Other'];
+const kindOptions: EntryKind['kind'][] = ['Application', 'Note', 'Contact', 'Other'];
 
 const options = kindOptions.map(kind => ({
     label: kind,            

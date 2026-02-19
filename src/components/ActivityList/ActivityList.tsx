@@ -18,7 +18,7 @@ const hrefStyle: React.CSSProperties = {
 }
  
 const kindToColor: Record<EntryKind['kind'], string> = {
-    App: 'green',
+    Application: 'green',
     Note: 'blue',
     Contact: 'gray',
     Other: 'red',
@@ -96,7 +96,7 @@ const ActivityList: React.FC = () => {
     });
     
     return (
-        <Card title="Entryies">
+        <Card title="Log">
             <Input
                 placeholder="Search by company, position or URL..."
                 allowClear
