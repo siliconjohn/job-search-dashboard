@@ -1,9 +1,9 @@
 {
-  "name": "job-search-logger",
+  "name": "job-search-dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://siliconjohn.github.io/job-search-logger/",
+  "homepage": "https://siliconjohn.github.io/job-search-dashboard/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

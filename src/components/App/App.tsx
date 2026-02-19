@@ -45,7 +45,7 @@ const AppLayout = () => {
             <Flex gap="middle" wrap>
                 <Layout style={layoutStyle}>
                     <Header style={headerStyle}>
-                        <h1>Job Search Log</h1>
+                        <h1>Job Search Dashboard</h1>
                         <Button 
                             size="small"
                             type="primary"
