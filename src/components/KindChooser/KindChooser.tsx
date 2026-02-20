@@ -1,5 +1,5 @@
 import { Radio, Form } from 'antd'; 
-import type { EntryKind, EntryType } from '../../types/entryTypes';
+import type { EntryKind, Entry } from '../../types/entryTypes';
 
 const kindOptions: EntryKind['kind'][] = ['Application', 'Note', 'Contact', 'Other'];
 
@@ -9,7 +9,7 @@ const options = kindOptions.map(kind => ({
 }));
 
 interface EntryKindExampleProps {  
-    valueName: keyof EntryType;
+    valueName: keyof Entry;
 }
 
 const EntryKindExample = ( { valueName }: EntryKindExampleProps ) => (

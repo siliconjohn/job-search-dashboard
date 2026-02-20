@@ -1,16 +1,16 @@
 import { Input, Button, Space, Form } from 'antd'; 
-import type { EntryType } from '../../types/entryTypes'; 
+import type { Entry } from '../../types/entryTypes'; 
 import type { FormInstance } from 'antd';
 
 interface InputCopyPasteProps {
     form: FormInstance;
     label: string;
-    valueName: keyof EntryType;
+    valueName: keyof Entry;
 }
 
 const InputCopyPaste = ( { form, label, valueName } : InputCopyPasteProps ) => {   
     
-    const pasteToField = async ( fieldName: keyof EntryType) => {
+    const pasteToField = async ( fieldName: keyof Entry) => {
         try {
             const text = await navigator.clipboard.readText(); 
             form.setFieldsValue({ [fieldName]: text.trim() });

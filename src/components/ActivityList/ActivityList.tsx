@@ -1,6 +1,6 @@
 import { Table, Input, Tag, Card } from 'antd'; 
 import { useState } from 'react';
-import { type EntryListTableType, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
+import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import type { TableProps } from 'antd';
 import { useEntriesStore } from '../../stores/entriesStore';
 
@@ -18,7 +18,7 @@ const hrefStyle: React.CSSProperties = {
 } 
 
 
-const columns: TableProps<EntryListTableType>['columns'] = [
+const columns: TableProps<Entry>['columns'] = [
     {
         title: 'Created',
         dataIndex: 'createdAt',
@@ -95,7 +95,7 @@ const ActivityList: React.FC = () => {
                 style={{ marginBottom: 16 }}
             />
     
-            <Table<EntryListTableType> 
+            <Table<EntryList> 
                 columns={columns} 
                 dataSource={filteredEntries} 
                 rowKey="key" 

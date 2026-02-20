@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { EntryType } from '../types/entryTypes';
+import type { Entry } from '../types/entryTypes';
 
 interface EntriesState {
-    entries: EntryType[];
-    addEntry: (entry: EntryType) => void;
+    entries: Entry[];
+    addEntry: (entry: Entry) => void;
 }
 
 export const useEntriesStore = create<EntriesState>()(

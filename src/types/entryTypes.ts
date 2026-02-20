@@ -1,4 +1,8 @@
-export type EntryKind =  'Application' | 'Note' | 'Contact' | 'Other';
+// Read only runtime array, the single source of truth
+export const ENTRY_KINDS = ['Application', 'Note', 'Contact', 'Other'] as const;
+
+// Creates the TypeScript type from the array
+export type EntryKind = typeof ENTRY_KINDS[number];
 
 export const entryKindToColor: Record<EntryKind, string> = {
     Application: 'green',
@@ -8,10 +12,19 @@ export const entryKindToColor: Record<EntryKind, string> = {
 };
 
 export const getEntryKindColor = (kind: EntryKind): string => {
-  return entryKindToColor[kind] ?? 'default';
+    return entryKindToColor[kind] ?? 'default';
 };
 
-export type EntryType = { 
+export const sanitizeKind = (value: string | undefined): EntryKind => {
+    if (!value) return 'Other';
+    const trimmed = value.trim();
+
+    return ENTRY_KINDS.includes(trimmed as EntryKind)
+        ? (trimmed as EntryKind)
+        : 'Other';
+};
+
+export type Entry = { 
     url: string,
     company: string,
     note: string,
@@ -21,16 +34,6 @@ export type EntryType = {
     key: string
 }
 
-export type EntryListType = {
-    entries: EntryType[];
-}
-
-export interface EntryListTableType {
-    key: string,  
-    url: string,
-    company: string,
-    note: string,
-    position: string,
-    createdAt: string,
-    kind: EntryKind
+export type EntryList = {
+    entries: Entry[];
 }

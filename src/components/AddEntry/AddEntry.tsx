@@ -1,5 +1,5 @@
 import { Button, Card, Form } from 'antd'; 
-import type { EntryType, EntryKind } from '../../types/entryTypes'; 
+import { type Entry, sanitizeKind } from '../../types/entryTypes'; 
 import { useEntriesStore } from '../../stores/entriesStore';
 import InputCopyPaste from '../InputCopyPaste/InputCopyPaste';
 import EntryKindExample from '../KindChooser/KindChooser';
@@ -17,14 +17,8 @@ const sanitizeUrl = (value: string): string => {
         return '';
     }
 };
-
-const VALID_KINDS: EntryKind[]  = [ 'Application', 'Note', 'Contact', 'Other'];
-
-const sanitizeKind = (value: EntryKind): EntryKind =>
-  VALID_KINDS.includes(value) ? value : 'Other';
-
-
-const sanitizeValues = (values: EntryType): EntryType => ({
+  
+const sanitizeValues = (values: Entry): Entry => ({
     ...values,
     company: sanitizeText(values.company ?? ''),
     position: sanitizeText(values.position ?? ''),
@@ -37,7 +31,7 @@ const AddEntry: React.FC = () => {
     const [ form ] = Form.useForm();
     const { addEntry } = useEntriesStore();
  
-    const onFinish = ( values: EntryType ) => {
+    const onFinish = ( values: Entry ) => {
         const sanitized = sanitizeValues(values);
 
         addEntry( { 
