@@ -9,15 +9,6 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
 });
 
-const hrefStyle: React.CSSProperties = { 
-    maxWidth: 180,
-    display: 'inline-block',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap' 
-} 
-
-
 const columns: TableProps<Entry>['columns'] = [
     {
         title: 'Created',
@@ -60,7 +51,14 @@ const columns: TableProps<Entry>['columns'] = [
         dataIndex: 'url',
         key: 'url',
         render: (url) => 
-            <a style={ hrefStyle } 
+            <a 
+                style={{ 
+                    maxWidth: 180,
+                    display: 'inline-block',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap' 
+                }} 
                 href={url} 
                 target="_blank" 
                 rel="noopener noreferrer"
@@ -95,7 +93,7 @@ const ActivityList: React.FC = () => {
                 style={{ marginBottom: 16 }}
             />
     
-            <Table<EntryList> 
+            <Table<Entry> 
                 columns={columns} 
                 dataSource={filteredEntries} 
                 rowKey="key" 
