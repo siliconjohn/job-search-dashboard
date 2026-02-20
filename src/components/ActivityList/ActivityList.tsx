@@ -1,6 +1,6 @@
 import { Table, Input, Tag, Card } from 'antd'; 
 import { useState } from 'react';
-import { type EntryListTableType, type EntryKind, getEntryKindColor } from '../../types';
+import { type EntryListTableType, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import type { TableProps } from 'antd';
 import { useEntriesStore } from '../../stores/entriesStore';
 

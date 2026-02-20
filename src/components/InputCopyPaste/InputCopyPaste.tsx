@@ -1,5 +1,5 @@
 import { Input, Button, Space, Form } from 'antd'; 
-import type { EntryType } from '../../types'; 
+import type { EntryType } from '../../types/entryTypes'; 
 import type { FormInstance } from 'antd';
 
 interface InputCopyPasteProps {

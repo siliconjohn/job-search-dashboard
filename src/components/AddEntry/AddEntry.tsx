@@ -1,5 +1,5 @@
 import { Button, Card, Form } from 'antd'; 
-import type { EntryType, EntryKind } from '../../types'; 
+import type { EntryType, EntryKind } from '../../types/entryTypes'; 
 import { useEntriesStore } from '../../stores/entriesStore';
 import InputCopyPaste from '../InputCopyPaste/InputCopyPaste';
 import EntryKindExample from '../KindChooser/KindChooser';

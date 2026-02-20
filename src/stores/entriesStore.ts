@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { EntryType } from '../types';
+import type { EntryType } from '../types/entryTypes';
 
 interface EntriesState {
     entries: EntryType[];

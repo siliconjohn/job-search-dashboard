@@ -11,7 +11,6 @@ export const getEntryKindColor = (kind: EntryKind): string => {
   return entryKindToColor[kind] ?? 'default';
 };
 
-// change name
 export type EntryType = { 
     url: string,
     company: string,

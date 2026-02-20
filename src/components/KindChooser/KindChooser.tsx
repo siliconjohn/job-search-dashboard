@@ -1,5 +1,5 @@
 import { Radio, Form } from 'antd'; 
-import type { EntryKind, EntryType } from '../../types';
+import type { EntryKind, EntryType } from '../../types/entryTypes';
 
 const kindOptions: EntryKind['kind'][] = ['Application', 'Note', 'Contact', 'Other'];
 
