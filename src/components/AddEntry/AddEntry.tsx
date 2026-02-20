@@ -6,11 +6,11 @@ import EntryKindExample from '../KindChooser/KindChooser';
 import { sanitizeText, sanitizeUrl} from '../../utils/sanitizers';
 
 const initialValues={
-  company: '',
-  position: '',
-  url: '',
-  note: '',
-  kind: 'Application',   
+    company: '',
+    position: '',
+    url: '',
+    note: '',
+    kind: 'Application',   
 }
 
 const sanitizeValues = (values: Entry): Entry => ({
