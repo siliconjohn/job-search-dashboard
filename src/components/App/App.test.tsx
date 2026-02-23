@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest' // optional if globals: true
+import { describe, it, expect } from 'vitest' 
 import App from './App'
 
 describe('App', () => {
@@ -10,4 +10,13 @@ describe('App', () => {
     expect(heading).toBeInTheDocument()
  
   });
-});
+
+  it('Renders theme button', () => {
+    render(<App />)
+
+    const button = screen.getByRole('button', { name: /toggle theme/i })
+
+    expect(button).toBeVisible()
+    expect(button).toBeEnabled()
+  });
+}); 
