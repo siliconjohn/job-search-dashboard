@@ -1,11 +1,11 @@
-import ActivityList from '../ActivityList/ActivityList';
+import AGActivityList from '../AGActivityList/AGActivityList';
 import AddEntry from '../AddEntry/AddEntry';
 
 const ActivityLog: React.FC = () => {   
     return (
         <>
             <AddEntry/>
-			<ActivityList/>
+			<AGActivityList/>
         </>
     )
 }  
