@@ -1,12 +1,10 @@
-import { useContext } from 'react';
 import { Flex, Layout, Button, ConfigProvider, theme } from 'antd';
-import { ThemeContext } from '../../contexts/ThemeContext';
-import ThemeProvider from '../../contexts/ThemeProvider';
+import { useTheme, ThemeProvider } from '../../contexts/ThemeContext';
 import ActivityLog from '../ActivityLog/ActivityLog';
 const { Header, Content } = Layout; 
 
 const AppLayout = () => {
-    const { themeName, toggleTheme } = useContext(ThemeContext)!;
+    const { themeName, toggleTheme } = useTheme();
 
     return (
         <ConfigProvider
