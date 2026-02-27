@@ -1,5 +1,6 @@
 import { Flex, Layout, Button, ConfigProvider, theme } from 'antd';
-import ThemeProvider, { useTheme } from '../../contexts/ThemeProvider';
+import ThemeProvider from '../../contexts/ThemeProvider';
+import { useTheme } from '../../contexts/useTheme';
 import ActivityLog from '../ActivityLog/ActivityLog';
 const { Header, Content } = Layout; 
 
