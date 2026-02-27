@@ -50,7 +50,7 @@ export const tableSortReducer = (state, action) => {
 };
 
 // Provider
-export const TableSortProvider = ({ children }) => {
+const TableSortProvider = ({ children }) => {
     const [state, dispatch] = useReducer(tableSortReducer, loadSavedSort());
     
     // Save to localStorage every time state changes
@@ -71,3 +71,5 @@ export const TableSortProvider = ({ children }) => {
         </TableSortContext.Provider>
     );
 };
+
+export default TableSortProvider;
