@@ -3,6 +3,7 @@ import { type TableProps, Table, Input, Tag, Card } from 'antd';
 import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import { formatDateShort } from '../../utils/dates';
+import { tableSortActions, useTableSortContext } from '../../contexts/TableSortContext';
 
 const columns: TableProps<Entry>['columns'] = [
     {
@@ -30,11 +31,13 @@ const columns: TableProps<Entry>['columns'] = [
                 {kind}
             </Tag>
         ),
+        sorter: (a, b) => a.kind.localeCompare(b.kind)
     },
     {
         title: 'Company',
         dataIndex: 'company',
-        key: 'company',  
+        key: 'company', 
+        sorter: (a, b) => a.kind.localeCompare(b.company) 
     },
     {
         title: 'Position',
@@ -66,7 +69,21 @@ const columns: TableProps<Entry>['columns'] = [
 const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
     const [searchText, setSearchText] = useState('');
+    const { dispatch } = useTableSortContext();
  
+    const handleChange = (pagination, filters, sorter) => {
+        const payload = {
+            order: sorter.order,
+            field: sorter.field,
+            columnKey: sorter.columnKey,
+        }
+
+        dispatch( { 
+            type: tableSortActions.SORT, 
+            payload  
+        } );
+    };
+     
     const filteredEntries = useMemo(() => {
         if (!searchText) return entries;
 
@@ -96,6 +113,7 @@ const ActivityList: React.FC = () => {
                 dataSource={filteredEntries} 
                 rowKey="key" 
                 scroll={{ x: 'max-content' }}
+                onChange={ handleChange }
             /> 
         </Card>
     )

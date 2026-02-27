@@ -1,11 +1,15 @@
-import AGActivityList from '../AGActivityList/AGActivityList';
+// import AGActivityList from '../AGActivityList/AGActivityList';
+import ActivityList from '../ActivityList/ActivityList';
 import AddEntry from '../AddEntry/AddEntry';
+import { TableSortProvider } from '../../contexts/TableSortContext';
 
 const ActivityLog: React.FC = () => {   
     return (
         <>
             <AddEntry/>
-			<AGActivityList/>
+            <TableSortProvider>
+			    <ActivityList/>
+            </TableSortProvider>
         </>
     )
 }  
