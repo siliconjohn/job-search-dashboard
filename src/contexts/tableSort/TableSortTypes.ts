@@ -5,7 +5,13 @@ export const tableSortActions = {
     RESET: 'RESET'
 };
 
-export const STORAGE_KEY = 'tableSortState'; // name of the key in localStorage
+export const STORAGE_KEY = 'tableSortState'; 
+
+type sortState = {
+    order: 'ascend' | 'descend' | undefined,
+    field: string | undefined,
+    columnKey: string | undefined
+}
 
 const initValues = { 
     order: 'descend',
@@ -29,7 +35,7 @@ export const loadSavedSort = () => {
 export const TableSortContext = createContext(undefined);
  
 // Create reducer
-export const tableSortReducer = (state, action) => {
+export const tableSortReducer = (state: sortState, action) => {
     switch (action.type) {
         case tableSortActions.SORT: return {
             ...state,

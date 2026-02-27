@@ -3,7 +3,8 @@ import { type TableProps, Table, Input, Tag, Card } from 'antd';
 import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import { formatDateShort } from '../../utils/dates';
-import { tableSortActions, useTableSortContext } from '../../contexts/tableSort/TableSortContext';
+import { tableSortActions } from '../../contexts/tableSort/TableSortTypes';
+import { useTableSortContext } from '../../contexts/tableSort/useTableSort';
 
 const columns: TableProps<Entry>['columns'] = [
     {

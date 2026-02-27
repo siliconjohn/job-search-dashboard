@@ -1,9 +1,9 @@
  
-import { useEffect, useReducer } from "react";
-import { tableSortReducer, loadSavedSort, STORAGE_KEY, TableSortContext} 
-    from './TableSortTypes';
-
-const TableSortProvider = ({ children }) => {
+ import { useEffect, useReducer } from "react";
+ import { tableSortReducer, loadSavedSort, STORAGE_KEY, TableSortContext} 
+ from './TableSortTypes';
+ 
+ const TableSortProvider = ({ children }) => {
     const [state, dispatch] = useReducer(tableSortReducer, loadSavedSort());
     
     // Save to localStorage every time state changes
@@ -20,7 +20,7 @@ const TableSortProvider = ({ children }) => {
     
     return (
         <TableSortContext.Provider value={value}>
-            {children}
+        {children}
         </TableSortContext.Provider>
     );
 };
