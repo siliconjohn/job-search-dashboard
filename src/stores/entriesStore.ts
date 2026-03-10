@@ -5,6 +5,7 @@ import type { Entry } from '../types/entryTypes';
 interface EntriesState {
     entries: Entry[];
     addEntry: (entry: Entry) => void;
+    updateNote: (key: string, note: string) => void;
 }
 
 export const useEntriesStore = create<EntriesState>()(
@@ -15,6 +16,12 @@ export const useEntriesStore = create<EntriesState>()(
             addEntry: (entry) =>
                 set((state) => ({
                     entries: [...state.entries, entry],
+                })),
+            updateNote: (key, note) =>
+                set((state) => ({
+                    entries: state.entries.map((e) =>
+                        e.key === key ? { ...e, note } : e
+                    ),
                 })),
         }),
         {

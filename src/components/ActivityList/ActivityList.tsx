@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { type TableProps, Table, Input, Tag, Card } from 'antd'; 
+import { type TableProps, Table, Input, Tag, Card, Button, Typography } from 'antd'; 
 import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import { formatDateShort } from '../../utils/dates';
@@ -49,7 +49,11 @@ const columns: TableProps<Entry>['columns'] = [
         title: 'Note',
         dataIndex: 'note',
         key: 'note',
-        ellipsis: true,
+        render: (note: string) => (
+            <Typography.Text>
+                {note != null && note.length > 60 ? `${note.slice(0, 60)}…` : (note ?? '')}
+            </Typography.Text>
+        ),
     },
     {
         title: 'URL',
@@ -75,8 +79,19 @@ const columns: TableProps<Entry>['columns'] = [
 
 const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
+    const updateNote = useEntriesStore( ( state ) => state.updateNote );
     const [searchText, setSearchText] = useState('');
+    const [draftNotes, setDraftNotes] = useState<Record<string, string>>({});
     const { dispatch } = useTableSortContext();
+
+    const saveNewNote = (entry: Entry, newNote: string) => {
+        updateNote(entry.key, newNote);
+        setDraftNotes((prev) => {
+            const next = { ...prev };
+            delete next[entry.key];
+            return next;
+        });
+    };
  
     const handleChange = (pagination, filters, sorter) => {
         const payload = {
@@ -112,22 +127,34 @@ const ActivityList: React.FC = () => {
     // expandable prop onTableProps<Entry>
     const expandable: TableProps<Entry>['expandable'] = {
         expandedRowRender: (entry) => (
-            <div style={{ padding: '8px 0 8px 50px' }}>
-                {entry.note && (
-                    <p style={{ margin: '0 0 8px' }}>
-                        <strong>Note:</strong> {entry.note}
-                    </p>
-                )}
+            <div style={{ padding: '8px 0 8px 24px' }}>
+             
                 {entry.url && (
-                    <p style={{ margin: 0 }}>
+                    <p style={{ margin: '0 0 8px' }}>
                         <strong>URL:</strong>{' '}
                         <a href={entry.url} target="_blank" rel="noopener noreferrer">
                             {entry.url}
                         </a>
                     </p>
                 )}
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginTop: 8 }}>
+                    <Input.TextArea
+                        placeholder="Edit or add note..."
+                        value={draftNotes[entry.key] ?? entry.note ?? ''}
+                        onChange={(e) =>
+                            setDraftNotes((prev) => ({ ...prev, [entry.key]: e.target.value }))
+                        }
+                        style={{ flex: 1, maxWidth: 400 }}
+                        rows={3}
+                    />
+                    <Button type="primary" onClick={() => saveNewNote(entry, draftNotes[entry.key] ?? entry.note ?? '')}>
+                        Save
+                    </Button>
+                </div>
                 {!entry.note && !entry.url && (
-                    <span style={{ color: 'var(--ant-color-text-tertiary)' }}>No additional details</span>
+                    <span style={{ color: 'var(--ant-color-text-tertiary)', display: 'block', marginBottom: 8 }}>
+                        No additional details
+                    </span>
                 )}
             </div>
         ),
