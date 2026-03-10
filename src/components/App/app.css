@@ -1,0 +1,8 @@
+
+.theme-transition {
+  transition: opacity 0.6s ease-in-out;
+}
+
+.theme-transition.fade {
+  opacity: 0.4; /* or 0.6 – adjust to taste */
+}

@@ -44,7 +44,13 @@ const columns: TableProps<Entry>['columns'] = [
         title: 'Position',
         dataIndex: 'position',
         key: 'position',  
-    }, 
+    },
+    {
+        title: 'Note',
+        dataIndex: 'note',
+        key: 'note',
+        ellipsis: true,
+    },
     {
         title: 'URL',
         dataIndex: 'url',
@@ -94,7 +100,8 @@ const ActivityList: React.FC = () => {
             return (
                 (entry.company?.toLowerCase().includes(lowerSearch) ?? false) ||
                 (entry.position?.toLowerCase().includes(lowerSearch) ?? false) ||
-                (entry.url?.toLowerCase().includes(lowerSearch) ?? false)
+                (entry.url?.toLowerCase().includes(lowerSearch) ?? false) ||
+                (entry.note?.toLowerCase().includes(lowerSearch) ?? false)
             );
         });
     }, [ entries, searchText ]);
@@ -102,7 +109,7 @@ const ActivityList: React.FC = () => {
     return (
         <Card title="Log">
             <Input
-                placeholder="Search by company, position or URL..."
+                placeholder="Search by company, position, note or URL..."
                 allowClear
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
