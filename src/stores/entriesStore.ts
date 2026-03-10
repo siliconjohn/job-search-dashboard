@@ -6,6 +6,7 @@ interface EntriesState {
     entries: Entry[];
     addEntry: (entry: Entry) => void;
     updateNote: (key: string, note: string) => void;
+    removeEntry: (key: string) => void;
     setEntries: (entries: Entry[]) => void;
 }
 
@@ -23,6 +24,10 @@ export const useEntriesStore = create<EntriesState>()(
                     entries: state.entries.map((e) =>
                         e.key === key ? { ...e, note } : e
                     ),
+                })),
+            removeEntry: (key) =>
+                set((state) => ({
+                    entries: state.entries.filter((e) => e.key !== key),
                 })),
             setEntries: (entries) => set({ entries }),
         }),

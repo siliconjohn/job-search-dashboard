@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
-import { type TableProps, type MenuProps, Table, Input, Tag, Card, Button, Typography, Dropdown } from 'antd'; 
+import { type TableProps, type MenuProps, Table, Input, Tag, Card, Button, Typography, Dropdown, Popconfirm } from 'antd'; 
 import { DownOutlined } from '@ant-design/icons';
 import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
@@ -9,7 +9,7 @@ import { parseCsvToEntries } from '../../utils/parseCsvEntries';
 import { tableSortActions } from '../../contexts/tableSort/TableSortTypes';
 import { useTableSortContext } from '../../contexts/tableSort/useTableSort';
 
-const columns: TableProps<Entry>['columns'] = [
+const baseColumns: TableProps<Entry>['columns'] = [
     {
         title: 'Created',
         dataIndex: 'createdAt',
@@ -88,6 +88,7 @@ const columns: TableProps<Entry>['columns'] = [
 const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
     const updateNote = useEntriesStore( ( state ) => state.updateNote );
+    const removeEntry = useEntriesStore( ( state ) => state.removeEntry );
     const setEntries = useEntriesStore( ( state ) => state.setEntries );
     const [searchText, setSearchText] = useState('');
     const [draftNotes, setDraftNotes] = useState<Record<string, string>>({});
@@ -163,6 +164,29 @@ const ActivityList: React.FC = () => {
             );
         });
     }, [ entries, searchText ]);
+
+    const columns: TableProps<Entry>['columns'] = useMemo(() => [
+        ...baseColumns,
+        {
+            title: 'Actions',
+            key: 'actions',
+            fixed: 'right',
+            width: 100,
+            render: (_: unknown, record: Entry) => (
+                <Popconfirm
+                    title="Delete this entry?"
+                    onConfirm={() => removeEntry(record.key)}
+                    okText="Delete"
+                    cancelText="Cancel"
+                    okButtonProps={{ danger: true }}
+                >
+                    <Button type="link" danger size="small">
+                        Delete
+                    </Button>
+                </Popconfirm>
+            ),
+        },
+    ], [ removeEntry ]);
 
     const entriesToMarkdown = (list: Entry[]): string => {
         const escape = (s: string) => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
