@@ -28,6 +28,8 @@ export type Entry = {
     url: string,
     company: string,
     note: string,
+    contact: string,
+    dead: boolean,
     position: string,
     createdAt: string,
     kind: EntryKind

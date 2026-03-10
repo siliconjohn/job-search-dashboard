@@ -40,12 +40,17 @@ const columns: TableProps<Entry>['columns'] = [
         title: 'Company',
         dataIndex: 'company',
         key: 'company', 
-        sorter: (a, b) => a.kind.localeCompare(b.company) 
+        sorter: (a, b) => a.company.localeCompare(b.company) 
     },
     {
         title: 'Position',
         dataIndex: 'position',
         key: 'position',  
+    },
+    {
+        title: 'Contact',
+        dataIndex: 'contact',
+        key: 'contact',
     },
     {
         title: 'Note',
@@ -151,6 +156,7 @@ const ActivityList: React.FC = () => {
             return (
                 (entry.company?.toLowerCase().includes(lowerSearch) ?? false) ||
                 (entry.position?.toLowerCase().includes(lowerSearch) ?? false) ||
+                (entry.contact?.toLowerCase().includes(lowerSearch) ?? false) ||
                 (entry.url?.toLowerCase().includes(lowerSearch) ?? false) ||
                 (entry.note?.toLowerCase().includes(lowerSearch) ?? false)
             );
@@ -159,11 +165,11 @@ const ActivityList: React.FC = () => {
 
     const entriesToMarkdown = (list: Entry[]): string => {
         const escape = (s: string) => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
-        const header = '| Created | Kind | Company | Position | Note | URL |';
-        const separator = '| --- | --- | --- | --- | --- | --- |';
+        const header = '| Created | Kind | Company | Position | Contact | Note | URL |';
+        const separator = '| --- | --- | --- | --- | --- | --- | --- |';
         const rows = list.map((e) => {
             const created = formatDateShort.format(new Date(e.createdAt));
-            return `| ${escape(created)} | ${escape(e.kind)} | ${escape(e.company)} | ${escape(e.position)} | ${escape(e.note)} | ${escape(e.url)} |`;
+            return `| ${escape(created)} | ${escape(e.kind)} | ${escape(e.company)} | ${escape(e.position)} | ${escape(e.contact)} | ${escape(e.note)} | ${escape(e.url)} |`;
         });
         return `# Job Search Log\n\n${header}\n${separator}\n${rows.join('\n')}`;
     };
@@ -182,10 +188,10 @@ const ActivityList: React.FC = () => {
             if (/[",\n\r]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
             return str;
         };
-        const header = 'Created,Kind,Company,Position,Note,URL';
+        const header = 'Created,Kind,Company,Position,Contact,Note,URL';
         const rows = list.map((e) => {
             const created = formatDateShort.format(new Date(e.createdAt));
-            return [created, e.kind, e.company, e.position, e.note, e.url].map(escape).join(',');
+            return [created, e.kind, e.company, e.position, e.contact ?? '', e.note, e.url].map(escape).join(',');
         });
         return [header, ...rows].join('\n');
     };
@@ -234,6 +240,7 @@ const ActivityList: React.FC = () => {
                             <li><Tag color={getEntryKindColor(entry.kind)} variant="solid">{entry.kind}</Tag></li>
                             <li><strong>Company:</strong> <Typography.Text title={entry.company || undefined}>{((entry.company || '—').length > 35) ? `${(entry.company || '—').slice(0, 35)}…` : (entry.company || '—')}</Typography.Text></li>
                             <li><strong>Position:</strong> <Typography.Text title={entry.position || undefined}>{((entry.position || '—').length > 35) ? `${(entry.position || '—').slice(0, 35)}…` : (entry.position || '—')}</Typography.Text></li>
+                            <li><strong>Contact:</strong> <Typography.Text title={entry.contact || undefined}>{((entry.contact || '—').length > 35) ? `${(entry.contact || '—').slice(0, 35)}…` : (entry.contact || '—')}</Typography.Text></li>
                             <li><strong>Created:</strong> <Typography.Text>{formatDateShort.format(new Date(entry.createdAt))}</Typography.Text></li>
                             {entry.url ? <li><strong>URL:</strong> <Typography.Text title={entry.url}><a href={entry.url} target="_blank" rel="noopener noreferrer">{(entry.url.length > 35) ? `${entry.url.slice(0, 35)}…` : entry.url}</a></Typography.Text></li> : null}
                             {entry.note ? <li><strong>Note:</strong> <Typography.Text title={entry.note}>{(entry.note.length > 35) ? `${entry.note.slice(0, 35)}…` : entry.note}</Typography.Text></li> : null}
@@ -287,7 +294,7 @@ const ActivityList: React.FC = () => {
             }
         >
             <Input
-                placeholder="Search by company, position, note or URL..."
+                placeholder="Search by company, position, contact, note or URL..."
                 allowClear
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}

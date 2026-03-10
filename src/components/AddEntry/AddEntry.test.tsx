@@ -55,6 +55,7 @@ describe('AddEntry', () => {
         expect(screen.getByTestId('input-position')).toBeInTheDocument();
         expect(screen.getByTestId('input-url')).toBeInTheDocument();
         expect(screen.getByTestId('input-note')).toBeInTheDocument();
+        expect(screen.getByTestId('input-contact')).toBeInTheDocument();
     });
 
     it('renders the KindChooser component', () => {

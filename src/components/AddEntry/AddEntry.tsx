@@ -10,6 +10,7 @@ const initialValues={
     position: '',
     url: '',
     note: '',
+    contact: '',
     kind: 'Application',   
 }
 
@@ -19,6 +20,7 @@ const sanitizeValues = (values: Entry): Entry => ({
     position: sanitizeText(values.position ?? ''),
     url: sanitizeUrl(values.url ?? ''),
     note: sanitizeText(values.note ?? ''),
+    contact: sanitizeText(values.contact ?? ''),
     kind: sanitizeKind(values.kind),
 });
 
@@ -31,6 +33,7 @@ const AddEntry: React.FC = () => {
 
         addEntry( { 
             ...sanitized, 
+            dead: false,
             createdAt: new Date().toISOString(), 
             key: crypto.randomUUID()
         } 
@@ -70,6 +73,12 @@ const AddEntry: React.FC = () => {
                     form={ form }
                     label="Note"
                     valueName={ "note" }
+                />
+
+                <InputCopyPaste 
+                    form={ form }
+                    label="Contact"
+                    valueName={ "contact" }
                 />
                 
                 <EntryKindExample  

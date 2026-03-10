@@ -42,7 +42,7 @@ function parseCreatedToIso(created: string): string {
     return isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString();
 }
 
-const EXPECTED_HEADER = 'Created,Kind,Company,Position,Note,URL';
+const EXPECTED_HEADER = 'Created,Kind,Company,Position,Contact,Note,URL';
 
 /**
  * Parse CSV text (as exported by this app) into Entry[].
@@ -56,16 +56,18 @@ export function parseCsvToEntries(csvText: string): Entry[] {
     const entries: Entry[] = [];
     for (let i = 1; i < lines.length; i++) {
         const cells = parseCsvLine(lines[i]);
-        if (cells.length < 6) continue;
-        const [created, kind, company, position, note, url] = cells;
+        if (cells.length < 7) continue;
+        const [created, kind, company, position, contact, note, url] = cells;
         entries.push({
             key: crypto.randomUUID(),
             createdAt: parseCreatedToIso(created),
             kind: sanitizeKind(kind),
             company: String(company ?? '').trim(),
             position: String(position ?? '').trim(),
+            contact: String(contact ?? '').trim(),
             note: String(note ?? '').trim(),
             url: String(url ?? '').trim(),
+            dead: false,
         });
     }
     return entries;
