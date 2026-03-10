@@ -146,6 +146,73 @@ const ActivityList: React.FC = () => {
         });
     }, [ entries, searchText ]);
 
+    const entriesToMarkdown = (list: Entry[]): string => {
+        const escape = (s: string) => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+        const header = '| Created | Kind | Company | Position | Note | URL |';
+        const separator = '| --- | --- | --- | --- | --- | --- |';
+        const rows = list.map((e) => {
+            const created = formatDateShort.format(new Date(e.createdAt));
+            return `| ${escape(created)} | ${escape(e.kind)} | ${escape(e.company)} | ${escape(e.position)} | ${escape(e.note)} | ${escape(e.url)} |`;
+        });
+        return `# Job Search Log\n\n${header}\n${separator}\n${rows.join('\n')}`;
+    };
+
+    const handleDownload = () => {
+        const markdown = entriesToMarkdown(entries);
+        const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Job Search Log</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px;   line-height: 1; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f5f5f5; }
+    a { color: #1677ff; }
+    h1 { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    var md = ${JSON.stringify(markdown)};
+    document.getElementById('content').innerHTML = marked.parse(md);
+  </script>
+</body>
+</html>`;
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    const entriesToCsv = (list: Entry[]): string => {
+        const escape = (s: string) => {
+            const str = String(s ?? '');
+            if (/[",\n\r]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
+            return str;
+        };
+        const header = 'Created,Kind,Company,Position,Note,URL';
+        const rows = list.map((e) => {
+            const created = formatDateShort.format(new Date(e.createdAt));
+            return [created, e.kind, e.company, e.position, e.note, e.url].map(escape).join(',');
+        });
+        return [header, ...rows].join('\n');
+    };
+
+    const handleDownloadCsv = () => {
+        const csv = entriesToCsv(entries);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'job-search-log.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     // For this line: ['expandable']
     // This is an indexed access type: you take a type and “look up” one of its 
     // properties. So TableProps<Entry>['expandable'] is “the type of the 
@@ -195,7 +262,15 @@ const ActivityList: React.FC = () => {
     };
     
     return (
-        <Card title="Log">
+        <Card
+            title="Log"
+            extra={
+                <span style={{ display: 'flex', gap: 8 }}>
+                    <Button onClick={handleDownload}>Download</Button>
+                    <Button onClick={handleDownloadCsv}>Download CSV</Button>
+                </span>
+            }
+        >
             <Input
                 placeholder="Search by company, position, note or URL..."
                 allowClear
