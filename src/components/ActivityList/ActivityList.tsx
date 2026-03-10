@@ -105,6 +105,33 @@ const ActivityList: React.FC = () => {
             );
         });
     }, [ entries, searchText ]);
+
+    // For this line: ['expandable']
+    // This is an indexed access type: you take a type and “look up” one of its 
+    // properties. So TableProps<Entry>['expandable'] is “the type of the 
+    // expandable prop onTableProps<Entry>
+    const expandable: TableProps<Entry>['expandable'] = {
+        expandedRowRender: (entry) => (
+            <div style={{ padding: '8px 0 8px 50px' }}>
+                {entry.note && (
+                    <p style={{ margin: '0 0 8px' }}>
+                        <strong>Note:</strong> {entry.note}
+                    </p>
+                )}
+                {entry.url && (
+                    <p style={{ margin: 0 }}>
+                        <strong>URL:</strong>{' '}
+                        <a href={entry.url} target="_blank" rel="noopener noreferrer">
+                            {entry.url}
+                        </a>
+                    </p>
+                )}
+                {!entry.note && !entry.url && (
+                    <span style={{ color: 'var(--ant-color-text-tertiary)' }}>No additional details</span>
+                )}
+            </div>
+        ),
+    };
     
     return (
         <Card title="Log">
@@ -122,6 +149,7 @@ const ActivityList: React.FC = () => {
                 rowKey="key" 
                 scroll={{ x: 'max-content' }}
                 onChange={ handleChange }
+                expandable={expandable}
             /> 
         </Card>
     )
