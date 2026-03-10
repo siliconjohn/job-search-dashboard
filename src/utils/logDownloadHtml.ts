@@ -19,9 +19,12 @@ export function getLogHtml(markdown: string): string {
       line-height: 1.4;
       color: #222;
     }
-    table { border-collapse: collapse; width: 100%; }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
     th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; }
     th { background: #f5f5f5; font-weight: 600; }
+    /* Columns: 1=Created, 2=Kind, 3=Company, 4=Position, 5=Contact, 6=Note, 7=URL */
+    th:nth-child(6), td:nth-child(6) { width: 40%; }
+    th:nth-child(7), td:nth-child(7) { width: 14%; }
     a { color: #1677ff; }
     a[href]::after { content: none; }
     h1 { margin-bottom: 1rem; font-size: 1.5rem; }
