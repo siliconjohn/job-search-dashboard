@@ -6,6 +6,7 @@ interface EntriesState {
     entries: Entry[];
     addEntry: (entry: Entry) => void;
     updateNote: (key: string, note: string) => void;
+    setEntries: (entries: Entry[]) => void;
 }
 
 export const useEntriesStore = create<EntriesState>()(
@@ -23,6 +24,7 @@ export const useEntriesStore = create<EntriesState>()(
                         e.key === key ? { ...e, note } : e
                     ),
                 })),
+            setEntries: (entries) => set({ entries }),
         }),
         {
             name: 'entries',

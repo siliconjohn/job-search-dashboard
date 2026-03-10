@@ -4,6 +4,7 @@ import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import { formatDateShort } from '../../utils/dates';
 import { getLogHtml } from '../../utils/logDownloadHtml';
+import { parseCsvToEntries } from '../../utils/parseCsvEntries';
 import { tableSortActions } from '../../contexts/tableSort/TableSortTypes';
 import { useTableSortContext } from '../../contexts/tableSort/useTableSort';
 
@@ -81,9 +82,11 @@ const columns: TableProps<Entry>['columns'] = [
 const ActivityList: React.FC = () => {
     const entries = useEntriesStore( ( state ) => state.entries );
     const updateNote = useEntriesStore( ( state ) => state.updateNote );
+    const setEntries = useEntriesStore( ( state ) => state.setEntries );
     const [searchText, setSearchText] = useState('');
     const [draftNotes, setDraftNotes] = useState<Record<string, string>>({});
     const textareaRefs = useRef<Record<string, HTMLTextAreaElement | null>>({});
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const { dispatch } = useTableSortContext();
 
     const formatDateMmDdYy = () => {
@@ -119,12 +122,19 @@ const ActivityList: React.FC = () => {
         });
     };
  
-    const handleChange = (pagination, filters, sorter) => {
+    const handleChange: NonNullable<TableProps<Entry>['onChange']> = (
+        _pagination,
+        _filters,
+        sorter
+    ) => {
+        const single = Array.isArray(sorter) ? sorter[0] : sorter;
+        const field = single?.field;
+        const columnKey = single?.columnKey;
         const payload = {
-            order: sorter.order,
-            field: sorter.field,
-            columnKey: sorter.columnKey,
-        }
+            order: single?.order === 'ascend' || single?.order === 'descend' ? single.order : undefined,
+            field: field != null ? (Array.isArray(field) ? String(field[0]) : String(field)) : undefined,
+            columnKey: columnKey != null ? String(columnKey) : undefined,
+        };
 
         dispatch( { 
             type: tableSortActions.SORT, 
@@ -191,6 +201,25 @@ const ActivityList: React.FC = () => {
         URL.revokeObjectURL(url);
     };
 
+    const handleImportCsv = () => {
+        fileInputRef.current?.click();
+    };
+
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            const text = typeof reader.result === 'string' ? reader.result : '';
+            const parsed = parseCsvToEntries(text);
+            if (parsed.length > 0 || text.trim() === '') {
+                setEntries(parsed);
+            }
+        };
+        reader.readAsText(file, 'UTF-8');
+        e.target.value = '';
+    };
+
     // For this line: ['expandable']
     // This is an indexed access type: you take a type and “look up” one of its 
     // properties. So TableProps<Entry>['expandable'] is “the type of the 
@@ -244,6 +273,14 @@ const ActivityList: React.FC = () => {
             title="Log"
             extra={
                 <span style={{ display: 'flex', gap: 8 }}>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".csv"
+                        style={{ display: 'none' }}
+                        onChange={onFileChange}
+                    />
+                    <Button onClick={handleImportCsv}>Import CSV</Button>
                     <Button onClick={handleDownload}>Download</Button>
                     <Button onClick={handleDownloadCsv}>Download CSV</Button>
                 </span>
