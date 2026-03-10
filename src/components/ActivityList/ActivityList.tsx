@@ -294,14 +294,15 @@ const ActivityList: React.FC = () => {
                 style={{ marginBottom: 16 }}
             />
     
-            <Table<Entry> 
-                columns={columns} 
-                dataSource={filteredEntries} 
-                rowKey="key" 
+            <Table<Entry>
+                columns={columns}
+                dataSource={filteredEntries}
+                rowKey="key"
+                pagination={false}
                 scroll={{ x: 'max-content' }}
                 onChange={ handleChange }
                 expandable={expandable}
-            /> 
+            />
         </Card>
     )
 }  
