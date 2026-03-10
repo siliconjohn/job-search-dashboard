@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
-import { type TableProps, Table, Input, Tag, Card, Button, Typography } from 'antd'; 
+import { type TableProps, type MenuProps, Table, Input, Tag, Card, Button, Typography, Dropdown } from 'antd'; 
+import { DownOutlined } from '@ant-design/icons';
 import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
 import { formatDateShort } from '../../utils/dates';
@@ -237,6 +238,28 @@ const ActivityList: React.FC = () => {
         fileInputRef.current?.click();
     };
 
+    const menuItems: MenuProps['items'] = [
+        { key: 'import', label: 'Import CSV' },
+        { key: 'print', label: 'Print' },
+        { key: 'downloadCsv', label: 'Download CSV' },
+    ];
+
+    const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
+        switch (key) {
+            case 'import':
+                handleImportCsv();
+                break;
+            case 'print':
+                handleDownload();
+                break;
+            case 'downloadCsv':
+                handleDownloadCsv();
+                break;
+            default:
+                break;
+        }
+    };
+
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -313,9 +336,14 @@ const ActivityList: React.FC = () => {
                         style={{ display: 'none' }}
                         onChange={onFileChange}
                     />
-                    <Button onClick={handleImportCsv}>Import CSV</Button>
-                    <Button onClick={handleDownloadCsv}>Download CSV</Button>
-                    <Button onClick={handleDownload}>Print</Button>
+                    <Dropdown
+                        menu={{ items: menuItems, onClick: handleMenuClick }}
+                        trigger={['click']}
+                    >
+                        <Button>
+                            Actions <DownOutlined />
+                        </Button>
+                    </Dropdown>
                 </span>
             }
         >
