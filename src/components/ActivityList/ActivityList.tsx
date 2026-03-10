@@ -177,9 +177,35 @@ const ActivityList: React.FC = () => {
     const handleDownload = () => {
         const markdown = entriesToMarkdown(entries);
         const html = getLogHtml(markdown);
-        const blob = new Blob([html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        window.open(url, '_blank', 'noopener,noreferrer');
+
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        document.body.appendChild(iframe);
+
+        const iframeWindow = iframe.contentWindow;
+        if (!iframeWindow) {
+            document.body.removeChild(iframe);
+            return;
+        }
+
+        iframe.onload = () => {
+            // Give the browser a moment to render before printing
+            setTimeout(() => {
+                iframeWindow.focus();
+                iframeWindow.print();
+                document.body.removeChild(iframe);
+            }, 50);
+        };
+
+        const doc = iframeWindow.document;
+        doc.open();
+        doc.write(html);
+        doc.close();
     };
 
     const entriesToCsv = (list: Entry[]): string => {
@@ -288,8 +314,8 @@ const ActivityList: React.FC = () => {
                         onChange={onFileChange}
                     />
                     <Button onClick={handleImportCsv}>Import CSV</Button>
-                    <Button onClick={handleDownload}>Download</Button>
                     <Button onClick={handleDownloadCsv}>Download CSV</Button>
+                    <Button onClick={handleDownload}>Print</Button>
                 </span>
             }
         >
