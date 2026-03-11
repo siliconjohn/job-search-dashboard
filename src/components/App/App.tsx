@@ -23,8 +23,8 @@ const AppLayout = () => {
                 },
             }}
         >
-            <div className="bg-slate-950 text-slate-100">
-                <Layout className="shadow-xl bg-slate-900/60 backdrop-blur">
+            <div className="bg-slate-900 text-slate-100">
+                <Layout className="shadow-xl bg-slate-900/40 backdrop-blur">
                     <Header className="flex items-center justify-between">
                         <div className="flex flex-col">
                             <h1 className="text-xl md:text-2xl font-semibold text-slate-100">
@@ -39,9 +39,13 @@ const AppLayout = () => {
                             Toggle Theme
                         </Button>
                     </Header>
-                    <Content className="px-4 md:px-4 py-6 md:py-4 overflow-y-auto bg-slate-900/40">
-                        <ActivityLog />
-                    </Content>
+                    <div className="bg-slate-900/40">
+                        <div className="mx-auto max-w-[1280px]">
+                            <Content className="px-4 md:px-4 py-6 md:py-4 overflow-y-auto">
+                                <ActivityLog />
+                            </Content>
+                        </div>
+                    </div>
                 </Layout>
             </div>
         </ConfigProvider>
