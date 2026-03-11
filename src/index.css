@@ -9,41 +9,6 @@ body,
 
 body {
   margin: 0;
-  background-color: #020617;
-  color: #f1f5f9;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* All buttons: hover border and text use emerald-510 */
-.ant-btn:hover {
-  border-color: #0ea572 !important;
-  color: #0ea572 !important;
-}
-.ant-btn-primary:hover {
-  background-color: #0ea572 !important;
-  border-color: #0ea572 !important;
-  color: #fff !important;
-}
-
-/* KindChooser Radio.Group button options: emerald-500 hover and checked */
-.kind-chooser-radios .ant-radio-button-wrapper:hover {
-  border-color: #10b981 !important;
-  color: #10b981 !important;
-}
-.kind-chooser-radios .ant-radio-button-wrapper-checked {
-  background-color: #10b981 !important;
-  border-color: #10b981 !important;
-  color: #fff !important;
-}
-.kind-chooser-radios .ant-radio-button-wrapper-checked:hover {
-  background-color: #34d399 !important;
-  border-color: #34d399 !important;
-  color: #fff !important;
-}
-
-/* Input text darker for readability */
-.ant-input,
-.ant-input-textarea textarea {
-  color: #0f172a !important;
 }

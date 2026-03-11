@@ -32,7 +32,6 @@ const InputCopyPaste = ( { form, label, valueName } : InputCopyPasteProps ) => {
                 <Button
                     type="primary"
                     onClick={() => pasteToField(valueName)}
-                    className='!bg-emerald-500 !border-emerald-400 hover:!bg-emerald-400 hover:!border-emerald-300'
                 >
                     Paste
                 </Button>

@@ -12,33 +12,29 @@ const AppLayout = () => {
             theme={{
                 algorithm: theme[themeName],
                 token: {
-                    // colorPrimary: '#52c41a',
-                    // colorSuccess: '#2d6d0d',
-                    // colorInfo: '#1677ff',
-                    // colorWarning: '#faad14',
-                    // colorError: '#ff4d4f',
-                    // colorPrimaryHover: '#73d13d',
-                    // colorPrimaryActive: '#389e0d',
+                    colorPrimary: '#10b981',
+                    colorPrimaryHover: '#34d399',
+                    colorPrimaryActive: '#059669',
+                    colorSuccess: '#059669',
+                    colorInfo: '#0d9488',
+                    colorWarning: '#d97706',
+                    colorError: '#dc2626',
                     borderRadius: 6,
                 },
             }}
         >
-            <div className="min-h-screen w-full bg-slate-950 text-slate-100">
-                <Layout className="min-h-screen max-w-6xl mx-auto shadow-xl bg-slate-900/60 backdrop-blur">
-                    <Header className="flex items-center justify-between px-6 md:px-10 bg-slate-900/80 border-b border-slate-800">
-                        <div className="flex flex-col gap-0.5">
-                            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-400">
-                                Tracker
-                            </span>
+            <div className="bg-slate-950 text-slate-100">
+                <Layout className="shadow-xl bg-slate-900/60 backdrop-blur">
+                    <Header className="flex items-center justify-between">
+                        <div className="flex flex-col">
                             <h1 className="text-xl md:text-2xl font-semibold text-slate-100">
-                                Job Search Dashboard
+                                Contact Dashboard
                             </h1>
                         </div>
                         <Button
                             size="small"
                             type="primary"
                             onClick={toggleTheme}
-                            className="!bg-emerald-500 !border-emerald-400 hover:!bg-emerald-400 hover:!border-emerald-300"
                         >
                             Toggle Theme
                         </Button>
