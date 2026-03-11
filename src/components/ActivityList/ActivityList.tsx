@@ -378,7 +378,7 @@ const ActivityList: React.FC = () => {
                     allowClear
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    className="md:max-w-md [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-100 [&_.ant-input]:placeholder:!text-slate-500"
+                    className="md:max-w-md [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-900 [&_.ant-input]:placeholder:!text-slate-500"
                 />
                 <span className="text-xs text-slate-400">
                     Showing <span className="font-semibold text-slate-200">{filteredEntries.length}</span> entries

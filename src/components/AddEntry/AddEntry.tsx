@@ -53,7 +53,7 @@ const AddEntry: React.FC = () => {
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 16 }}
                 initialValues={ initialValues }
-                className="[&_.ant-form-item-label>label]:!text-slate-900 [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-100 [&_.ant-input]:placeholder:!text-slate-500"
+                className="[&_.ant-form-item-label>label]:!text-slate-900 [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-900 [&_.ant-input]:placeholder:!text-slate-500"
             >   
                 <InputCopyPaste 
                     form={ form }

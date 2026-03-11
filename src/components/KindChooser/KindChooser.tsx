@@ -16,6 +16,7 @@ const EntryKindExample = ({ valueName }: EntryKindExampleProps) => (
         label={null}
     >
         <Radio.Group
+            className="kind-chooser-radios"
             block
             options={options}
             optionType="button"
