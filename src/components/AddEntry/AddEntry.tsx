@@ -43,13 +43,17 @@ const AddEntry: React.FC = () => {
     };
 
     return (
-        <Card title="Add Entry" style={{ marginBottom: 24 }}>
+        <Card
+            title={<span className="text-slate-900 font-semibold">Add Entry</span>}
+            className="bg-slate-900/60 border border-slate-800 rounded-xl shadow-sm"
+        >
             <Form
                 form={ form }
                 onFinish={ onFinish }
-                labelCol={{ span: 2 }}
-                wrapperCol={{ span: 12 }}
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 16 }}
                 initialValues={ initialValues }
+                className="[&_.ant-form-item-label>label]:!text-slate-900 [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-100 [&_.ant-input]:placeholder:!text-slate-500"
             >   
                 <InputCopyPaste 
                     form={ form }
@@ -89,6 +93,7 @@ const AddEntry: React.FC = () => {
                     <Button 
                         type="primary" 
                         htmlType="submit"
+                        className="!bg-emerald-500 !border-emerald-400 hover:!bg-emerald-400 hover:!border-emerald-300"
                     >
                         Save
                     </Button>

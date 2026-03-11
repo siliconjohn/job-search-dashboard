@@ -23,8 +23,8 @@ const AppLayout = () => {
                 },
             }}
         >
-            <div className="min-h-screen w-full bg-slate-950 text-slate-100">
-                <Layout className="min-h-screen max-w-6xl mx-auto shadow-xl bg-slate-900/60 backdrop-blur">
+            <div className="min-h-screen w-full bg-slate-350 text-slate-900">
+                <Layout className="min-h-screen max-w-6xl mx-auto shadow-xl bg-slate-600/60 backdrop-blur">
                     <Header className="flex items-center justify-between px-6 md:px-10 bg-slate-900/80 border-b border-slate-800">
                         <div className="flex flex-col gap-0.5">
                             <span className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-400">

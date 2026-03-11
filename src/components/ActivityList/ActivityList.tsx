@@ -350,9 +350,10 @@ const ActivityList: React.FC = () => {
     
     return (
         <Card
-            title="Log"
+            title={<span className="text-slate-900 font-semibold">Activity Log</span>}
+            className="bg-slate-900/60 border border-slate-800 rounded-xl shadow-sm"
             extra={
-                <span style={{ display: 'flex', gap: 8 }}>
+                <span className="flex gap-2 items-center">
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -364,20 +365,25 @@ const ActivityList: React.FC = () => {
                         menu={{ items: menuItems, onClick: handleMenuClick }}
                         trigger={['click']}
                     >
-                        <Button>
+                        <Button className="!border-slate-700 text-slate-100">
                             Actions <DownOutlined />
                         </Button>
                     </Dropdown>
                 </span>
             }
         >
-            <Input
-                placeholder="Search by company, position, contact, note or URL..."
-                allowClear
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                style={{ marginBottom: 16 }}
-            />
+            <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <Input
+                    placeholder="Search by company, position, contact, note or URL..."
+                    allowClear
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="md:max-w-md [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-100 [&_.ant-input]:placeholder:!text-slate-500"
+                />
+                <span className="text-xs text-slate-400">
+                    Showing <span className="font-semibold text-slate-200">{filteredEntries.length}</span> entries
+                </span>
+            </div>
     
             <Table<Entry>
                 columns={columns}
@@ -387,7 +393,7 @@ const ActivityList: React.FC = () => {
                 scroll={{ x: 'max-content' }}
                 onChange={ handleChange }
                 expandable={expandable}
-            />
+             />
         </Card>
     )
 }  

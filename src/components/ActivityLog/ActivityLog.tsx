@@ -6,7 +6,9 @@ import TableSortProvider from '../../contexts/tableSort/TableSortProvider';
 const ActivityLog: React.FC = () => {   
     return (
         <>
-            <AddEntry/>
+            <div className="mb-6">
+                <AddEntry/>
+            </div>
             <TableSortProvider>
 			    <ActivityList/>
             </TableSortProvider>
