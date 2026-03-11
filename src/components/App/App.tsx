@@ -39,7 +39,7 @@ const AppLayout = () => {
                             Toggle Theme
                         </Button>
                     </Header>
-                    <Content className="px-4 md:px-8 py-6 md:py-8 overflow-y-auto bg-slate-900/40">
+                    <Content className="px-4 md:px-4 py-6 md:py-4 overflow-y-auto bg-slate-900/40">
                         <ActivityLog />
                     </Content>
                 </Layout>

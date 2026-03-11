@@ -1,5 +1,5 @@
 /**
- * Returns a full HTML document string for rendering the job search log markdown in a new tab.
+ * Returns a full HTML document string for rendering the Contact Log log markdown in a new tab.
  * Styled for both on-screen view and print.
  */
 export function getLogHtml(markdown: string): string {
@@ -8,7 +8,7 @@ export function getLogHtml(markdown: string): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Job Search Log</title>
+  <title>Contact Log Log</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     body {

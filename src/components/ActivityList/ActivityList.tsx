@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
-import { type TableProps, type MenuProps, Table, Input, Tag, Card, Button, Typography, Dropdown, Popconfirm } from 'antd'; 
+import { type TableProps, type MenuProps, Table, Input, Tag, Card, Button, 
+    Typography, Dropdown, Popconfirm } from 'antd'; 
 import { DownOutlined } from '@ant-design/icons';
 import { useEntriesStore } from '../../stores/entriesStore';
 import { type Entry, type EntryKind, getEntryKindColor } from '../../types/entryTypes';
@@ -15,8 +16,7 @@ const baseColumns: TableProps<Entry>['columns'] = [
         dataIndex: 'createdAt',
         key: 'createdAt',
         width: 70,
-        render: (createdAt) => 
-            formatDateShort.format( new Date( createdAt )),
+        render: (createdAt) => formatDateShort.format( new Date( createdAt )),
         sorter: (a, b) => { 
             const timeA = new Date(a.createdAt).getTime();
             const timeB = new Date(b.createdAt).getTime();
@@ -41,17 +41,14 @@ const baseColumns: TableProps<Entry>['columns'] = [
         title: 'Company',
         dataIndex: 'company',
         key: 'company', 
+        width: 100,
         sorter: (a, b) => a.company.localeCompare(b.company) 
-    },
-    {
-        title: 'Position',
-        dataIndex: 'position',
-        key: 'position',  
     },
     {
         title: 'Contact',
         dataIndex: 'contact',
         key: 'contact',
+        width: 75,
     },
     {
         title: 'Note',
@@ -62,6 +59,12 @@ const baseColumns: TableProps<Entry>['columns'] = [
                 {note != null && note.length > 60 ? `${note.slice(0, 60)}…` : (note ?? '')}
             </Typography.Text>
         ),
+    },
+    {
+        title: 'Position',
+        dataIndex: 'position',
+        key: 'position', 
+        width: 50, 
     },
     {
         title: 'URL',
@@ -196,7 +199,7 @@ const ActivityList: React.FC = () => {
             const created = formatDateShort.format(new Date(e.createdAt));
             return `| ${escape(created)} | ${escape(e.kind)} | ${escape(e.company)} | ${escape(e.position)} | ${escape(e.contact)} | ${escape(e.note)} | ${escape(e.url)} |`;
         });
-        return `# Job Search Log\n\n${header}\n${separator}\n${rows.join('\n')}`;
+        return `# Contact Log Log\n\n${header}\n${separator}\n${rows.join('\n')}`;
     };
 
     const handleDownload = () => {
@@ -247,13 +250,13 @@ const ActivityList: React.FC = () => {
         return [header, ...rows].join('\n');
     };
 
-    const handleDownloadCsv = () => {
+    const handleDownloadCSV = () => {
         const csv = entriesToCsv(entries);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'job-search-log.csv';
+        a.download = 'contact-log.csv';
         a.click();
         URL.revokeObjectURL(url);
     };
@@ -263,9 +266,9 @@ const ActivityList: React.FC = () => {
     };
 
     const menuItems: MenuProps['items'] = [
-        { key: 'import', label: 'Import CSV' },
         { key: 'print', label: 'Print' },
-        { key: 'downloadCsv', label: 'Download CSV' },
+        { key: 'import', label: 'Import CSV' },
+        { key: 'downloadCSV', label: 'Download CSV' },
     ];
 
     const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
@@ -276,8 +279,8 @@ const ActivityList: React.FC = () => {
             case 'print':
                 handleDownload();
                 break;
-            case 'downloadCsv':
-                handleDownloadCsv();
+            case 'downloadCSV':
+                handleDownloadCSV();
                 break;
             default:
                 break;
@@ -305,11 +308,11 @@ const ActivityList: React.FC = () => {
     // expandable prop onTableProps<Entry>
     const expandable: TableProps<Entry>['expandable'] = {
         expandedRowRender: (entry) => (
-            <div style={{ padding: '8px 0 8px 24px' }}>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: 24, alignItems: 'flex-start', marginTop: 8 }}>
-                    <div style={{ flex: '0 1 240px', minWidth: 0 }}>
-                        <strong style={{ display: 'block', marginBottom: 4 }}>Summary</strong>
-                        <ul style={{ margin: 0, paddingLeft: 20 }}>
+            <div className="py-2 pr-0 pl-6">
+                <div className="flex flex-row gap-6 items-start mt-2">
+                    <div className="min-w-0 flex-[0_1_240px]">
+                        <strong className="block mb-1">Summary</strong>
+                        <ul className="m-0 pl-5">
                             <li><Tag color={getEntryKindColor(entry.kind)} variant="solid">{entry.kind}</Tag></li>
                             <li><strong>Company:</strong> <Typography.Text title={entry.company || undefined}>{((entry.company || '—').length > 35) ? `${(entry.company || '—').slice(0, 35)}…` : (entry.company || '—')}</Typography.Text></li>
                             <li><strong>Position:</strong> <Typography.Text title={entry.position || undefined}>{((entry.position || '—').length > 35) ? `${(entry.position || '—').slice(0, 35)}…` : (entry.position || '—')}</Typography.Text></li>
@@ -319,7 +322,7 @@ const ActivityList: React.FC = () => {
                             {entry.note ? <li><strong>Note:</strong> <Typography.Text title={entry.note}>{(entry.note.length > 35) ? `${entry.note.slice(0, 35)}…` : entry.note}</Typography.Text></li> : null}
                         </ul>
                     </div>
-                    <div style={{ flex: '1 1 300px', minWidth: 0, maxWidth: 800 }}>
+                    <div className="min-w-0 max-w-[800px] flex-[1_1_300px]">
                         <div
                             ref={(el) => {
                                 textareaRefs.current[entry.key] = el?.querySelector('textarea') ?? null;
@@ -331,14 +334,21 @@ const ActivityList: React.FC = () => {
                                 onChange={(e) =>
                                     setDraftNotes((prev) => ({ ...prev, [entry.key]: e.target.value }))
                                 }
-                                style={{ minHeight: 150, width: '100%' }}
+                                className="w-full"
+                                style={{ minHeight: 150 }}
                             />
                         </div>
-                        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                            <Button type="primary" onClick={() => saveNewNote(entry, draftNotes[entry.key] ?? entry.note ?? '')} style={{ flex: 1 }}>
+                        <div className="flex gap-2 mt-2">
+                            <Button 
+                                type="primary" 
+                                onClick={() => saveNewNote(entry, draftNotes[entry.key] ?? entry.note ?? '')} 
+                                className="flex-1"
+                            >
                                 Save
                             </Button>
-                            <Button onClick={() => insertDateAtCursor(entry)} style={{ flex: 1 }}>
+                            <Button 
+                                onClick={() => insertDateAtCursor(entry)} 
+                                style={{ flex: 1 }}>
                                 Insert Date
                             </Button>
                         </div>
@@ -349,52 +359,54 @@ const ActivityList: React.FC = () => {
     };
     
     return (
-        <Card
-            title={<span className="text-slate-900 font-semibold">Activity Log</span>}
-            className="bg-slate-900/60 border border-slate-800 rounded-xl shadow-sm"
-            extra={
-                <span className="flex gap-2 items-center">
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept=".csv"
-                        style={{ display: 'none' }}
-                        onChange={onFileChange}
+        <div className="mt-4">
+            <Card
+                title={<span className="text-slate-900 font-semibold">Activity Log</span>}
+                className="bg-slate-900/60 border border-slate-800 rounded-xl shadow-sm"
+                extra={
+                    <span className="flex gap-2 items-center">
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".csv"
+                            style={{ display: 'none' }}
+                            onChange={onFileChange}
+                        />
+                        <Dropdown
+                            menu={{ items: menuItems, onClick: handleMenuClick }}
+                            trigger={['click']}
+                        >
+                            <Button type="primary">
+                                Actions <DownOutlined />
+                            </Button>
+                        </Dropdown>
+                    </span>
+                }
+            >
+                <div className="mb-4 ml-10 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <Input
+                        placeholder="Search by company, position, contact, note or URL..." 
+                        value={searchText}
+                        allowClear
+                        onChange={(e) => setSearchText(e.target.value)}
+                        className="md:max-w-md [&_.ant-input]:!text-slate-900 [&_.ant-input]:placeholder:!text-slate-500"
                     />
-                    <Dropdown
-                        menu={{ items: menuItems, onClick: handleMenuClick }}
-                        trigger={['click']}
-                    >
-                        <Button className="!border-slate-700 text-slate-100">
-                            Actions <DownOutlined />
-                        </Button>
-                    </Dropdown>
-                </span>
-            }
-        >
-            <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <Input
-                    placeholder="Search by company, position, contact, note or URL..."
-                    allowClear
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    className="md:max-w-md [&_.ant-input]:!border-slate-700 [&_.ant-input]:!text-slate-900 [&_.ant-input]:placeholder:!text-slate-500"
+                    <span className="text-xs text-slate-600">
+                        Showing <span className="font-semibold text-slate-700">{filteredEntries.length}</span> entries
+                    </span>
+                </div>
+        
+                <Table<Entry>
+                    columns={columns}
+                    dataSource={filteredEntries}
+                    rowKey="key"
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                    onChange={ handleChange }
+                    expandable={expandable}
                 />
-                <span className="text-xs text-slate-400">
-                    Showing <span className="font-semibold text-slate-200">{filteredEntries.length}</span> entries
-                </span>
-            </div>
-    
-            <Table<Entry>
-                columns={columns}
-                dataSource={filteredEntries}
-                rowKey="key"
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-                onChange={ handleChange }
-                expandable={expandable}
-             />
-        </Card>
+            </Card>
+        </div>
     )
 }  
 

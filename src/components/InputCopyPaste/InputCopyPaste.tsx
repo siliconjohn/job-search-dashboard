@@ -21,7 +21,7 @@ const InputCopyPaste = ( { form, label, valueName } : InputCopyPasteProps ) => {
         
     return (
         <Form.Item label={ label }>
-            <Space.Compact style={{ width: '100%' }}>
+            <Space.Compact className="w-full">
                 <Form.Item
                     name={ valueName }
                     noStyle

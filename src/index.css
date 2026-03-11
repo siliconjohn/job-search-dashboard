@@ -12,3 +12,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/*  
+.ant-input {
+  border: 1px solid #0f172a !important;
+  box-shadow: none !important;
+} */
