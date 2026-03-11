@@ -6,17 +6,16 @@ const options = ENTRY_KINDS.map(kind => ({
     value: kind,
 }));
 
-interface EntryKindExampleProps {
+interface EntryKindChooserProps {
     valueName: string;  
 }
 
-const EntryKindExample = ({ valueName }: EntryKindExampleProps) => (
+const EntryKindChooser = ({ valueName }: EntryKindChooserProps) => (
     <Form.Item 
         name={valueName} 
         label={null}
     >
         <Radio.Group
-            className="kind-chooser-radios"
             block
             options={options}
             optionType="button"
@@ -24,4 +23,4 @@ const EntryKindExample = ({ valueName }: EntryKindExampleProps) => (
     </Form.Item>
 );
 
-export default EntryKindExample;
+export default EntryKindChooser;

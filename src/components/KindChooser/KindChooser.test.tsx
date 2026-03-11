@@ -2,14 +2,14 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Form } from 'antd';
-import EntryKindExample from './KindChooser';
+import EntryKindChooser from './KindChooser';
 import { ENTRY_KINDS } from '../../types/entryTypes';
 
 const Wrapper = ({ valueName = 'kind', initialValue = 'Application' } = {}) => {
     const [form] = Form.useForm();
     return (
         <Form form={form} initialValues={{ [valueName]: initialValue }}>
-            <EntryKindExample valueName={valueName} />
+            <EntryKindChooser valueName={valueName} />
         </Form>
     );
 };

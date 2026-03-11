@@ -2,7 +2,7 @@ import { Button, Card, Form } from 'antd';
 import { type Entry, sanitizeKind } from '../../types/entryTypes'; 
 import { useEntriesStore } from '../../stores/entriesStore';
 import InputCopyPaste from '../InputCopyPaste/InputCopyPaste';
-import EntryKindExample from '../KindChooser/KindChooser';
+import EntryKindChooser from '../KindChooser/KindChooser';
 import { sanitizeText, sanitizeUrl } from '../../utils/sanitizers';
 
 const initialValues={
@@ -49,12 +49,12 @@ const AddEntry: React.FC = () => {
         >
             <Form
                 form={ form }
-                onFinish={ onFinish }
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 16 }}
+                onFinish={ onFinish } 
+                labelCol={{ xs: { span: 24 }, md: { span: 4 } }}
+                wrapperCol={{ xs: { span: 24 }, md: { span: 16 } }}
                 initialValues={ initialValues }
                 className="[&_.ant-form-item-label>label]:!font-bold [&_.ant-input]:!border-slate-700 
-                    [&_.ant-input]:!text-slate-100 [&_.ant-input]:placeholder:!text-slate-500"
+                    [&_.ant-input]:placeholder:!text-slate-500"
             >   
                 <InputCopyPaste 
                     form={ form }
@@ -86,7 +86,7 @@ const AddEntry: React.FC = () => {
                     valueName={ "contact" }
                 />
                 
-                <EntryKindExample  
+                <EntryKindChooser
                     valueName={ "kind" }
                 />
                 
