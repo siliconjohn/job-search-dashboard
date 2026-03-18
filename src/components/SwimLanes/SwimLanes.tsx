@@ -1,6 +1,7 @@
 import { Card, Tag, Typography } from 'antd';
+import { useState } from 'react';
 import { useEntriesStore } from '../../stores/entriesStore';
-import { ENTRY_KINDS, getEntryKindColor, type EntryKind } from '../../types/entryTypes';
+import { APPLICATION_STATUS, getApplicationStatusColor, type ApplicationStatus } from '../../types/entryTypes';
 import { formatDateShort } from '../../utils/dates';
 
 const truncate = (value: string, maxChars: number) => {
@@ -10,24 +11,67 @@ const truncate = (value: string, maxChars: number) => {
 
 const SwimLanes: React.FC = () => {
     const entries = useEntriesStore((state) => state.entries);
+    const updateStatus = useEntriesStore((state) => state.updateStatus);
 
-    const getByKindAndDead = (kind: EntryKind, dead: boolean) =>
-        entries.filter((e) => e.kind === kind && e.dead === dead);
+    const getByStatusAndDead = (status: ApplicationStatus, dead: boolean) =>
+        entries.filter((e) => e.kind === 'Application' && e.status === status && e.dead === dead);
+
+    const [draggingKey, setDraggingKey] = useState<string | null>(null);
+    const [dragOverStatus, setDragOverStatus] = useState<ApplicationStatus | null>(null);
+
+    type DragPayload = { key: string };
+
+    const readDragPayload = (e: React.DragEvent) => {
+        const raw =
+            e.dataTransfer.getData('application/x-job-search-logger') ||
+            e.dataTransfer.getData('application/json') ||
+            e.dataTransfer.getData('text/plain');
+
+        if (!raw) return null;
+        try {
+            const parsed: unknown = JSON.parse(raw);
+            if (!parsed || typeof parsed !== 'object') return null;
+            if (!('key' in parsed) || typeof (parsed as DragPayload).key !== 'string') return null;
+            return parsed as DragPayload;
+        } catch {
+            return null;
+        }
+    };
 
     return (
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2">
-            {ENTRY_KINDS.map((kind) => {
-                const active = getByKindAndDead(kind, false);
-                const archived = getByKindAndDead(kind, true);
+            {APPLICATION_STATUS.map((status) => {
+                const active = getByStatusAndDead(status, false);
+                const archived = getByStatusAndDead(status, true);
 
                 return (
-                    <div key={kind} className="min-w-[320px] max-w-[420px] flex-1">
+                    <div
+                        key={status}
+                        className={`min-w-[320px] max-w-[420px] flex-1 ${
+                            dragOverStatus === status
+                                ? 'ring-2 ring-emerald-200/70 bg-slate-200/25 rounded-xl'
+                                : ''
+                        }`}
+                        onDragOver={(e) => {
+                            e.preventDefault(); // allow drop
+                            e.dataTransfer.dropEffect = 'move';
+                            setDragOverStatus(status);
+                        }}
+                        onDrop={(e) => {
+                            e.preventDefault();
+                            const payload = readDragPayload(e);
+                            if (!payload?.key) return;
+                            updateStatus(payload.key, status);
+                            setDraggingKey(null);
+                            setDragOverStatus(null);
+                        }}
+                    >
                         <Card
-                            className="bg-slate-900/60 border border-slate-800 rounded-xl shadow-sm"
+                            className="bg-slate-200/60 border border-slate-300 rounded-xl shadow-sm"
                             title={
                                 <span className="flex items-center gap-2">
-                                    <Tag color={getEntryKindColor(kind)} variant="solid">
-                                        {kind}
+                                    <Tag color={getApplicationStatusColor(status)} variant="solid">
+                                        {status}
                                     </Tag>
                                 </span>
                             }
@@ -43,15 +87,34 @@ const SwimLanes: React.FC = () => {
                                     {active.length === 0 ? (
                                         <Typography.Text type="secondary">No active entries</Typography.Text>
                                     ) : (
-                                        <div className="flex flex-col gap-2  max-h-[560px] overflow-y-auto pr-1">
+                                        <div className="flex flex-col gap-2 max-h-[260px] overflow-y-auto pr-1">
                                             {active.map((entry) => {
                                                 const url = entry.url?.trim();
                                                 const note = entry.note?.trim() ?? '';
 
+                                                const isDraggingThis = draggingKey === entry.key;
+
                                                 return (
                                                     <div
                                                         key={entry.key}
-                                                        className="border border-slate-200  rounded-xl bg-slate-100/40 p-3"
+                                                        draggable
+                                                        onDragStart={(e) => {
+                                                            setDraggingKey(entry.key);
+                                                            e.dataTransfer.effectAllowed = 'move';
+                                                            e.dataTransfer.setData(
+                                                                'application/x-job-search-logger',
+                                                                JSON.stringify({ key: entry.key })
+                                                            );
+                                                        }}
+                                                        onDragEnd={() => {
+                                                            setDraggingKey(null);
+                                                            setDragOverStatus(null);
+                                                        }}
+                                                        className={`border border-slate-300 rounded-xl bg-slate-200/50 p-3 cursor-grab ${
+                                                            isDraggingThis
+                                                                ? 'opacity-90 bg-slate-200/70 border-dashed border-emerald-200/70 cursor-grabbing text-sm'
+                                                                : ''
+                                                        }`}
                                                     >
                                                         <div className="flex flex-col gap-1">
                                                             <div className="font-semibold">
@@ -110,10 +173,29 @@ const SwimLanes: React.FC = () => {
                                                 const url = entry.url?.trim();
                                                 const note = entry.note?.trim() ?? '';
 
+                                                const isDraggingThis = draggingKey === entry.key;
+
                                                 return (
                                                     <div
                                                         key={entry.key}
-                                                        className="border border-slate-800 rounded-xl bg-slate-900/30 p-3 opacity-80"
+                                                        draggable
+                                                        onDragStart={(e) => {
+                                                            setDraggingKey(entry.key);
+                                                            e.dataTransfer.effectAllowed = 'move';
+                                                            e.dataTransfer.setData(
+                                                                'application/x-job-search-logger',
+                                                                JSON.stringify({ key: entry.key })
+                                                            );
+                                                        }}
+                                                        onDragEnd={() => {
+                                                            setDraggingKey(null);
+                                                            setDragOverStatus(null);
+                                                        }}
+                                                        className={`border border-slate-300 rounded-xl bg-slate-200/35 p-3 opacity-80 cursor-grab ${
+                                                            isDraggingThis
+                                                                ? 'opacity-90 bg-slate-200/60 border-dashed border-emerald-200/70 cursor-grabbing text-sm'
+                                                                : ''
+                                                        }`}
                                                     >
                                                         <div className="flex flex-col gap-1">
                                                             <div className="font-semibold">

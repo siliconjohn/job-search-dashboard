@@ -62,6 +62,7 @@ export function parseCsvToEntries(csvText: string): Entry[] {
             key: crypto.randomUUID(),
             createdAt: parseCreatedToIso(created),
             kind: sanitizeKind(kind),
+            status: 'Application',
             company: String(company ?? '').trim(),
             position: String(position ?? '').trim(),
             contact: String(contact ?? '').trim(),

@@ -35,7 +35,8 @@ const AddEntry: React.FC = () => {
             ...sanitized, 
             dead: false,
             createdAt: new Date().toISOString(), 
-            key: crypto.randomUUID()
+            key: crypto.randomUUID(),
+            status: 'Application',
         } 
         );
 

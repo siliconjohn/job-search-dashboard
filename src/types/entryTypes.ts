@@ -1,8 +1,10 @@
 // Read only runtime array, the single source of truth
 export const ENTRY_KINDS = ['Application', 'Note', 'Contact', 'Other'] as const;
+export const APPLICATION_STATUS = ['Application', 'Interview', 'Rejection', 'Ghosted', 'Offer', 'Declined'] as const;
 
 // Creates the TypeScript type from the array
 export type EntryKind = typeof ENTRY_KINDS[number];
+export type ApplicationStatus = typeof APPLICATION_STATUS[number];
 
 export const entryKindToColor: Record<EntryKind, string> = {
     Application: 'green',
@@ -13,6 +15,19 @@ export const entryKindToColor: Record<EntryKind, string> = {
 
 export const getEntryKindColor = (kind: EntryKind): string => {
     return entryKindToColor[kind] ?? 'default';
+};
+
+export const applicationStatusToColor: Record<ApplicationStatus, string> = {
+    Application: 'green',
+    Interview: 'blue',
+    Rejection: 'red',
+    Ghosted: 'gray',
+    Offer: 'gold',
+    Declined: 'volcano',
+};
+
+export const getApplicationStatusColor = (status: ApplicationStatus): string => {
+    return applicationStatusToColor[status] ?? 'default';
 };
 
 export const sanitizeKind = (value: string | undefined): EntryKind => {
@@ -32,7 +47,8 @@ export type Entry = {
     dead: boolean,
     position: string,
     createdAt: string,
-    kind: EntryKind
+    kind: EntryKind,
+    status: ApplicationStatus,
     key: string
 }
 
