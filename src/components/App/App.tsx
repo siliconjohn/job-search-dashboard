@@ -2,6 +2,7 @@ import { Layout, Button, ConfigProvider, theme } from 'antd';
 import ThemeProvider from '../../contexts/theme/ThemeProvider';
 import { useTheme } from '../../contexts/theme/useTheme';
 import ActivityLog from '../ActivityLog/ActivityLog';
+import SwimLanes from '../SwimLanes/SwimLanes';
 const { Header, Content } = Layout; 
 
 const AppLayout = () => {
@@ -43,6 +44,7 @@ const AppLayout = () => {
                         <div className="mx-auto max-w-[1280px]">
                             <Content className="px-4 md:px-4 py-6 md:py-4 overflow-y-auto">
                                 <ActivityLog />
+                                <SwimLanes/>
                             </Content>
                         </div>
                     </div>
